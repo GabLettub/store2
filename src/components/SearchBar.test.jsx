@@ -36,4 +36,29 @@ describe("SearchBar component", () => {
     );
     expect(select).toBeInTheDocument();
   });
+
+  it("should manipulate the inputs", async () => {
+    render(<SearchBarWrapped />);
+
+    const txt = await screen.findByTestId("search-text");
+    const checkbox = await screen.findByTestId("search-checkbox");
+    const select = await screen.findByTestId("search-select");
+
+    // Test of textbox
+    fireEvent.change(txt, { target: { value: "Sample" } });
+    expect(txt.value).toBe("Sample");
+
+    // Test of checkbox
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(true);
+    //expect(checkbox.checked).toBeTruthy(); //checks if true
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toBeFalsy();
+
+    // Test of select
+    fireEvent.change(select, { target: { value: "desc" } });
+    expect(select.value).toBe("desc");
+    fireEvent.change(select, { target: { value: "asc" } });
+    expect(select.value).toBe("esc");
+  });
 });
